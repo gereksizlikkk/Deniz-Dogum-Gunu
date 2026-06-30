@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyi Ki Doğdun Deniz!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #fed6e3 0%, #a8edea 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            max-width: 80%;
+            animation: popIn 1s ease-out;
+        }
+
+        h1 {
+            color: #ff477e;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .btn {
+            background-color: #ff477e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #ff2a65;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-box" class="container">
+        <h1>Deniz İçin Bir Sürpriz Var! 🎁</h1>
+        <p>Kardeşim, senin için bir şey hazırladım. Alttaki butona basmayı unutma!</p>
+        <button class="btn" onclick="surpriziBaslat()">Buraya Tıkla! ✨</button>
+    </div>
+
+    <div id="surprise-box" class="container hidden">
+        <h1 id="main-title">🎉 DOĞUM GÜNÜN KUTLU OLSUN DENİZ! 🎉</h1>
+        <p id="message">İyi ki doğdun kardeşim! <br> Yeni yaşın sana sağlık, mutluluk ve başarı getirsin. Adamsın!</p>
+        <div style="font-size: 3rem; margin-top: 20px;">🎂🎈🥳</div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function surpriziBaslat() {
+            // Kutuları değiştir
+            document.getElementById('start-box').classList.add('hidden');
+            document.getElementById('surprise-box').classList.remove('hidden');
+            
+            // Müziği oynat
+            var music = document.getElementById('bg-music');
+            music.play().catch(function(error) {
+                console.log("Müzik otomatik başlatılamadı, etkileşim gerekiyor.");
+            });
+
+            // Konfeti efektini başlat
+            kutlamaEfekti();
+        }
+
+        function kutlamaEfekti() {
+            var duration = 15 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              // Konfetileri iki köşeden de fırlat
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
